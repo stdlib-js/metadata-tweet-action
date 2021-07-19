@@ -4,7 +4,13 @@
     "description": "Trigger the sending of tweets from a metadata object array.",
     "main": "index.js",
     "scripts": {},
-    "keywords": [],
+    "keywords": [
+        "github",
+        "action",
+        "metadata",
+        "twitter",
+        "tweet"
+    ],
     "author": {
         "name": "Philipp Burckhardt",
         "url": "pburckhardt@outlook.com"
