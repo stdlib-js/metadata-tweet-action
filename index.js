@@ -38,6 +38,7 @@ async function main() {
 			access_token_key: core.getInput( 'TWITTER_ACCESS_TOKEN' ),
 			access_token_secret: core.getInput( 'TWITTER_ACCESS_TOKEN_SECRET' )
 		})
+		core.info( `Processing ${metadata.length} metadata entries...` );
 		for ( let i = 0; i < metadata.length; i++ ) {
 			const elem = metadata[ i ];
 			if ( elem.type === 'tweet' ) {
