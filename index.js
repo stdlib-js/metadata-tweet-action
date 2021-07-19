@@ -38,23 +38,23 @@ async function main() {
 			access_token_key: core.getInput( 'TWITTER_ACCESS_TOKEN' ),
 			access_token_secret: core.getInput( 'TWITTER_ACCESS_TOKEN_SECRET' )
 		})
-        for ( let i = 0; i < metadata.length; i++ ) {
-            const elem = metadata[ i ];
-            if ( elem.type === 'tweet' ) {
-                let status = elem.status;
-                if ( elem.author && !contains( status, '@' ) ) {
-                    status = status + 'by ' + elem.author;
-                }
-                if ( !contains( status, '#javascript' ) ) {
-                    status = rtrim( status ) + ' #javascript';
-                }
-                if ( !contains( status, '#nodejs' ) ) {
-                    status = rtrim( status ) + ' #nodejs';
-                }
-                const res = await client.post( '/statuses/update', { status });
-                core.info( res );
-            }
-        }
+		for ( let i = 0; i < metadata.length; i++ ) {
+			const elem = metadata[ i ];
+			if ( elem.type === 'tweet' ) {
+				let status = elem.status;
+				if ( elem.author && !contains( status, '@' ) ) {
+					status = status + 'by ' + elem.author;
+				}
+				if ( !contains( status, '#javascript' ) ) {
+					status = rtrim( status ) + ' #javascript';
+				}
+				if ( !contains( status, '#nodejs' ) ) {
+					status = rtrim( status ) + ' #nodejs';
+				}
+				const res = await client.post( '/statuses/update', { status });
+				core.info( res );
+			}
+		}
 	} catch ( e ) {
 		core.error( e );
 		core.setFailed( e.message );
