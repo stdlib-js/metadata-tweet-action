@@ -22,9 +22,9 @@ jobs:
         id: extract-metadata
         uses: stdlib-js/commit-metadata-action@v1
       - name: Process metadata and send tweets
-        run: |
-          ./
+        uses: ./
         with:
+          metadata: ${{ steps.extract-metadata.outputs.metadata }}
           TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
           TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
