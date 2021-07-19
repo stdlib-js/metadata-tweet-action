@@ -6,7 +6,6 @@ inputs:
   metadata:
     description: Metadata object array.
     required: true
-    type: object
   TWITTER_CONSUMER_KEY:
     description: A valid Twitter consumer key.
     required: true
