@@ -4,6 +4,7 @@ name: Test GitHub Action
 # Workflow triggers:
 on:
   push:
+  workflow_dispatch:
 
 # Workflow jobs:
 jobs:
