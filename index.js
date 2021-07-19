@@ -31,7 +31,7 @@ const rtrim = require( '@stdlib/string-right-trim' );
 */
 async function main() {
 	try {
-		const metadata = core.getInput( 'metadata' );
+		const metadata = JSON.parse( core.getInput( 'metadata' ) );
 		const client = new Twitter({
 			consumer_key: core.getInput( 'TWITTER_CONSUMER_KEY' ),
 			consumer_secret: core.getInput( 'TWITTER_CONSUMER_SECRET' ),
