@@ -20,9 +20,11 @@
 
 const core = require( '@actions/core' );
 const Twitter = require( 'twitter' );
+const isArray = require( '@stdlib/assert-is-array' );
 const contains = require( '@stdlib/assert-contains' );
 const replace = require( '@stdlib/string-replace' );
 const readJSON = require( '@stdlib/fs-read-json' ).sync;
+const shuffle = require( '@stdlib/random-shuffle' );
 const reFromString = require( '@stdlib/utils-regexp-from-string' );
 const objectKeys = require( '@stdlib/utils-keys' );
 const trim = require( '@stdlib/string-trim' );
@@ -113,7 +115,13 @@ async function main() {
 					core.info( `Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...` );
 					const re = reFromString( key );
 					if ( re.test( description ) ) {
-						let tweet = replace( description, re, rules[ key ] );
+						let replacement;
+						if ( isArray( rules[ key ] ) ) {
+							replacement = shuffle( rules[ key ] )[ 0 ];
+						} else { 
+							replacement = rules[ key ]
+						}
+						let tweet = replace( description, re, replacement );
 						tweet = replacePlaceholders( tweet, elem, authors );
 						core.info( `Tweeting: "${tweet}"` );
 						const res = await client.post( '/statuses/update', { status: tweet } );
