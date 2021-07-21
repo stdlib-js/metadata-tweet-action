@@ -43,6 +43,7 @@ const trim = require( '@stdlib/string-trim' );
 function twitterHandle( user, authors ) {
 	const { username } = user;
 	if ( username ) {
+		core.info( 'Checking for whether username is present in the authors object: '+JSON.stringify( authors ) );
 		if ( authors[ username ] ) {
 			return `@${authors[ username ]}`;
 		}
