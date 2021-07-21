@@ -25,6 +25,7 @@ const replace = require( '@stdlib/string-replace' );
 const readJSON = require( '@stdlib/fs-read-json' ).sync;
 const reFromString = require( '@stdlib/utils-regexp-from-string' );
 const objectKeys = require( '@stdlib/utils-keys' );
+const trim = require( '@stdlib/string-trim' );
 
 
 // FUNCTIONS //
@@ -58,7 +59,9 @@ async function main() {
 		const metadata = JSON.parse( core.getInput( 'metadata' ) );
 		const rulesPath = core.getInput( 'rules' );
 		const rulesTable = readJSON( rulesPath );
-		const types = core.getInput( 'types' ).split( ',' );
+		const types = core.getInput( 'types' )
+			.split( ',' )
+			.map( x => trim( x ) );
 		core.info( `Generate tweets for metadata of the following types: ${types} (n = ${types.length}).` );
 		const client = new Twitter({
 			consumer_key: core.getInput( 'TWITTER_CONSUMER_KEY' ),

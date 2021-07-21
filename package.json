@@ -22,6 +22,7 @@
         "@stdlib/fs-read-json": "^0.0.5",
         "@stdlib/string-replace": "^0.0.8",
         "@stdlib/string-right-trim": "^0.0.6",
+        "@stdlib/string-trim": "^0.0.6",
         "@stdlib/utils-keys": "^0.0.5",
         "@stdlib/utils-regexp-from-string": "^0.0.6",
         "twitter": "^1.7.1"
