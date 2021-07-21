@@ -74,7 +74,7 @@ async function main() {
 				const rules = rulesTable[ elem.type ];
 				const keys = objectKeys( rules );
 				for ( let j = 0; j < keys.length; j++ ) {
-					const re = reFromString( rules[ keys[ j ] ] );
+					const re = reFromString( keys[ j ] );
 					if ( re.test( description ) ) {
 						let tweet = replace( description, re, rules[ keys[ j ] ] );
 						tweet = replacePlaceholders( tweet, elem );
