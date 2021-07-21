@@ -63,6 +63,7 @@ function replacePlaceholders( str, elem, authors ) {
 	const keys = objectKeys( elem );
 	for ( let i = 0; i < keys.length; i++ ) {
 		const key = keys[ i ];
+		core.info( 'Replacing <'+key+'> in the supplied string...' );
 		let value;
 		switch ( key ) {
 			case 'author': 
