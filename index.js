@@ -21,8 +21,31 @@
 const core = require( '@actions/core' );
 const Twitter = require( 'twitter' );
 const contains = require( '@stdlib/assert-contains' );
-const rtrim = require( '@stdlib/string-right-trim' );
+const replace = require( '@stdlib/string-replace' );
 const readJSON = require( '@stdlib/fs-read-json' ).sync;
+const reFromString = require( '@stdlib/utils-regexp-from-string' );
+const objectKeys = require( '@stdlib/utils-keys' );
+
+
+// FUNCTIONS //
+
+/**
+* Replaces all `<placeholder>`s in the supplied string.
+*
+* @private
+* @param {string} str - string to replace placeholders in
+* @param {Object} elem - metadata object
+* @returns {string} string with placeholders replaced
+*/
+function replacePlaceholders( str, elem ) {
+	let out = str;
+	const keys = objectKeys( elem );
+	for ( let i = 0; i < keys.length; i++ ) {
+		const key = keys[ i ];
+		out = replace( out, '<' + key + '>', elem[ key ] );
+	}
+	return out;
+}
 
 
 // MAIN //
@@ -34,10 +57,9 @@ async function main() {
 	try {
 		const metadata = JSON.parse( core.getInput( 'metadata' ) );
 		const rulesPath = core.getInput( 'rules' );
-		const rules = readJSON( rulesPath );
-		core.info( rules );
+		const rulesTable = readJSON( rulesPath );
 		const types = core.getInput( 'types' ).split( ',' );
-		core.info( types );
+		core.info( `Generate tweets for metadata of the following types: ${types} (n = ${types.length}).` );
 		const client = new Twitter({
 			consumer_key: core.getInput( 'TWITTER_CONSUMER_KEY' ),
 			consumer_secret: core.getInput( 'TWITTER_CONSUMER_SECRET' ),
@@ -48,18 +70,20 @@ async function main() {
 		for ( let i = 0; i < metadata.length; i++ ) {
 			const elem = metadata[ i ];
 			if ( contains( types, elem.type ) ) {
-				let status = elem.status;
-				if ( elem.author && !contains( status, '@' ) ) {
-					status = status + 'by ' + elem.author;
+				const description = elem.description;
+				const rules = rulesTable[ elem.type ];
+				const keys = objectKeys( rules );
+				for ( let j = 0; j < keys.length; j++ ) {
+					const re = reFromString( rules[ keys[ j ] ] );
+					if ( re.test( description ) ) {
+						let tweet = replace( description, re, rules[ keys[ j ] ] );
+						tweet = replacePlaceholders( tweet, elem );
+						core.info( `Tweeting: "${tweet}"` );
+						const res = await client.post( '/statuses/update', { status: tweet } );
+						core.info( res );
+						break;
+					}
 				}
-				if ( !contains( status, '#javascript' ) ) {
-					status = rtrim( status ) + ' #javascript';
-				}
-				if ( !contains( status, '#nodejs' ) ) {
-					status = rtrim( status ) + ' #nodejs';
-				}
-				const res = await client.post( '/statuses/update', { status });
-				core.info( res );
 			}
 		}
 	} catch ( e ) {
