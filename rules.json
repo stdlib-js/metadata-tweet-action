@@ -1,7 +1,7 @@
 {
 	"bugfix": {},
 	"feature": {
-		"/add support ([\\s\\S]+)$/": ":robot_face: [stdlib-bot]: Feature announcement! We've added support $1! Thanks, <authors>! <commit_link> #javascript #nodejs"
+		"/adds? support ([\\s\\S]+)$/": ":robot_face: [stdlib-bot]: Feature announcement! We've added support $1! Thanks, <author>! <commit_link> #javascript #nodejs"
 	},
 	"release": {}
 }
