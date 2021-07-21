@@ -74,9 +74,11 @@ async function main() {
 				const rules = rulesTable[ elem.type ];
 				const keys = objectKeys( rules );
 				for ( let j = 0; j < keys.length; j++ ) {
-					const re = reFromString( keys[ j ] );
+					const key = keys[ j ];
+					core.info( `Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...` );
+					const re = reFromString( key );
 					if ( re.test( description ) ) {
-						let tweet = replace( description, re, rules[ keys[ j ] ] );
+						let tweet = replace( description, re, rules[ key ] );
 						tweet = replacePlaceholders( tweet, elem );
 						core.info( `Tweeting: "${tweet}"` );
 						const res = await client.post( '/statuses/update', { status: tweet } );
