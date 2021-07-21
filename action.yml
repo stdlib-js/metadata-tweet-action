@@ -6,6 +6,12 @@ inputs:
   metadata:
     description: Metadata object array.
     required: true
+  types: 
+    description: Comma-separated list of meatadata types to generate tweets for.
+    default: "bugfix, feature, release"
+  rules:
+    description: A file path to a JSON file containing the rules for generating tweets in the form of an object with regular expression strings and corresponding replacement strings for each type.
+    default: "./rules.json"
   TWITTER_CONSUMER_KEY:
     description: A valid Twitter consumer key.
     required: true

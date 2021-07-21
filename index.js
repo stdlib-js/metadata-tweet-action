@@ -22,6 +22,7 @@ const core = require( '@actions/core' );
 const Twitter = require( 'twitter' );
 const contains = require( '@stdlib/assert-contains' );
 const rtrim = require( '@stdlib/string-right-trim' );
+const readJSON = require( '@stdlib/fs-read-json' ).sync;
 
 
 // MAIN //
@@ -32,6 +33,11 @@ const rtrim = require( '@stdlib/string-right-trim' );
 async function main() {
 	try {
 		const metadata = JSON.parse( core.getInput( 'metadata' ) );
+		const rulesPath = core.getInput( 'rules' );
+		const rules = readJSON( rulesPath );
+		core.info( rules );
+		const types = core.getInput( 'types' ).split( ',' );
+		core.info( types );
 		const client = new Twitter({
 			consumer_key: core.getInput( 'TWITTER_CONSUMER_KEY' ),
 			consumer_secret: core.getInput( 'TWITTER_CONSUMER_SECRET' ),
@@ -41,7 +47,7 @@ async function main() {
 		core.info( `Processing ${metadata.length} metadata entries...` );
 		for ( let i = 0; i < metadata.length; i++ ) {
 			const elem = metadata[ i ];
-			if ( elem.type === 'tweet' ) {
+			if ( contains( types, elem.type ) ) {
 				let status = elem.status;
 				if ( elem.author && !contains( status, '@' ) ) {
 					status = status + 'by ' + elem.author;
