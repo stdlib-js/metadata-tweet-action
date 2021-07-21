@@ -20,7 +20,7 @@ jobs:
           npm install
       - name: Extract metadata
         id: extract-metadata
-        uses: stdlib-js/commit-metadata-action@v1
+        uses: stdlib-js/commit-metadata-action@v1.0.1
       - name: Process metadata and send tweets
         uses: ./
         with:
