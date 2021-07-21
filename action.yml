@@ -12,6 +12,9 @@ inputs:
   rules:
     description: A file path to a JSON file containing the rules for generating tweets in the form of an object with regular expression strings and corresponding replacement strings for each type.
     default: "./rules.json"
+  authors: 
+    description: A file path to a JSON file containing a mapping from GitHub user names to Twitter handles.
+    default: "./authors.json"
   TWITTER_CONSUMER_KEY:
     description: A valid Twitter consumer key.
     required: true
