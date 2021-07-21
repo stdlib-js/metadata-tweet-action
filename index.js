@@ -31,19 +31,48 @@ const trim = require( '@stdlib/string-trim' );
 // FUNCTIONS //
 
 /**
+* Returns the Twitter handle corresponding to a given GitHub user.
+*
+* @private
+* @param {Object} user - GitHub user object
+* @param {Object} authors - object mapping GitHub user names to Twitter handles
+* @returns {string} Twitter handle
+*/
+function twitterHandle( user, authors ) {
+	const { username } = user;
+	if ( username ) {
+		if ( authors[ username ] ) {
+			return `@${authors[ username ]}`;
+		}
+		return `@${username}`;
+	}
+	return null;
+}
+
+/**
 * Replaces all `<placeholder>`s in the supplied string.
 *
 * @private
 * @param {string} str - string to replace placeholders in
 * @param {Object} elem - metadata object
+* @param {Object} authors - object mapping GitHub user names to Twitter handles
 * @returns {string} string with placeholders replaced
 */
-function replacePlaceholders( str, elem ) {
+function replacePlaceholders( str, elem, authors ) {
 	let out = str;
 	const keys = objectKeys( elem );
 	for ( let i = 0; i < keys.length; i++ ) {
 		const key = keys[ i ];
-		out = replace( out, '<' + key + '>', elem[ key ] );
+		let value;
+		switch ( key ) {
+			case 'author': 
+				value = twitterHandle( elem[ key ], authors );
+				break;
+			default:
+				value = elem[ key ];
+				break;
+		}
+		out = replace( out, '<' + key + '>', value );
 	}
 	return out;
 }
@@ -59,6 +88,8 @@ async function main() {
 		const metadata = JSON.parse( core.getInput( 'metadata' ) );
 		const rulesPath = core.getInput( 'rules' );
 		const rulesTable = readJSON( rulesPath );
+		const authorsPath = core.getInput( 'authors' );
+		const authors = readJSON( authorsPath );
 		const types = core.getInput( 'types' )
 			.split( ',' )
 			.map( x => trim( x ) );
@@ -82,7 +113,7 @@ async function main() {
 					const re = reFromString( key );
 					if ( re.test( description ) ) {
 						let tweet = replace( description, re, rules[ key ] );
-						tweet = replacePlaceholders( tweet, elem );
+						tweet = replacePlaceholders( tweet, elem, authors );
 						core.info( `Tweeting: "${tweet}"` );
 						const res = await client.post( '/statuses/update', { status: tweet } );
 						core.info( res );
