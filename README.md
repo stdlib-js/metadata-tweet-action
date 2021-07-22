@@ -18,13 +18,9 @@ limitations under the License.
 
 -->
 
----
-
 # Metadata Tweet Action
 
-> A GitHub action for automatically sending tweets specified in a metadata array.
-
----
+> A GitHub action for automatically sending tweets based on commit metadata.
 
 ## Example Workflow
 
