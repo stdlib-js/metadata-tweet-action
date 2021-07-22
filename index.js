@@ -38,18 +38,17 @@ const trim = require( '@stdlib/string-trim' );
 * @private
 * @param {Object} user - GitHub user object
 * @param {Object} authors - object mapping GitHub user names to Twitter handles
-* @returns {string} Twitter handle
+* @returns {string} Twitter handle or the name of the user as a fallback
 */
 function twitterHandle( user, authors ) {
-	const { username } = user;
+	const { username, name } = user;
 	if ( username ) {
 		core.info( 'Checking for whether username is present in the authors object: '+JSON.stringify( authors ) );
 		if ( authors[ username ] ) {
 			return `@${authors[ username ]}`;
 		}
-		return `@${username}`;
 	}
-	return null;
+	return name;
 }
 
 /**
