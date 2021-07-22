@@ -1,5 +1,10 @@
 {
-	"bugfix": {},
+	"bugfix": {
+		"^[\\s\\S]*?fixes([\\s\\S]+)$/i": [
+			":robot_face: [stdlib-bot]: New bugfix! Latest update fixes $1. Thanks, <author>! <url> #javascript #nodejs",
+			":robot_face: [stdlib-bot]: Patch just landed fixing $1. Thanks, <author>! <url> #javascript #nodejs"
+		]
+	},
 	"feature": {
 		"/^[\\s\\S]*?adds? support ([\\s\\S]+)$/i": [
 			":robot_face: [stdlib-bot]: Feature announcement! We've added support $1! Thanks, <author>! <url> #javascript #nodejs",
