@@ -21,7 +21,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // MODULES //
-const core_1 = __importDefault(require("@actions/core"));
+const core_1 = require("@actions/core");
 const twitter_1 = __importDefault(require("twitter"));
 const assert_is_array_1 = __importDefault(require("@stdlib/assert-is-array"));
 const assert_contains_1 = __importDefault(require("@stdlib/assert-contains"));
@@ -43,7 +43,7 @@ const string_trim_1 = __importDefault(require("@stdlib/string-trim"));
 function twitterHandle(user, authors) {
     const { username, name } = user;
     if (username) {
-        core_1.default.info('Checking for whether username is present in the authors object: ' + JSON.stringify(authors));
+        (0, core_1.info)('Checking for whether username is present in the authors object: ' + JSON.stringify(authors));
         if (authors[username]) {
             return `@${authors[username]}`;
         }
@@ -64,7 +64,7 @@ function replacePlaceholders(str, elem, authors) {
     const keys = (0, utils_keys_1.default)(elem);
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        core_1.default.info('Replacing <' + key + '> in the supplied string...');
+        (0, core_1.info)('Replacing <' + key + '> in the supplied string...');
         let value;
         switch (key) {
             case 'author':
@@ -84,22 +84,22 @@ function replacePlaceholders(str, elem, authors) {
 */
 async function main() {
     try {
-        const metadata = JSON.parse(core_1.default.getInput('metadata'));
-        const rulesPath = core_1.default.getInput('rules');
+        const metadata = JSON.parse((0, core_1.getInput)('metadata'));
+        const rulesPath = (0, core_1.getInput)('rules');
         const rulesTable = (0, fs_read_json_1.sync)(rulesPath);
-        const authorsPath = core_1.default.getInput('authors');
+        const authorsPath = (0, core_1.getInput)('authors');
         const authors = (0, fs_read_json_1.sync)(authorsPath);
-        const types = core_1.default.getInput('types')
+        const types = (0, core_1.getInput)('types')
             .split(',')
             .map(x => (0, string_trim_1.default)(x));
-        core_1.default.info(`Generate tweets for metadata of the following types: ${types} (n = ${types.length}).`);
+        (0, core_1.info)(`Generate tweets for metadata of the following types: ${types} (n = ${types.length}).`);
         const client = new twitter_1.default({
-            consumer_key: core_1.default.getInput('TWITTER_CONSUMER_KEY'),
-            consumer_secret: core_1.default.getInput('TWITTER_CONSUMER_SECRET'),
-            access_token_key: core_1.default.getInput('TWITTER_ACCESS_TOKEN'),
-            access_token_secret: core_1.default.getInput('TWITTER_ACCESS_TOKEN_SECRET')
+            consumer_key: (0, core_1.getInput)('TWITTER_CONSUMER_KEY'),
+            consumer_secret: (0, core_1.getInput)('TWITTER_CONSUMER_SECRET'),
+            access_token_key: (0, core_1.getInput)('TWITTER_ACCESS_TOKEN'),
+            access_token_secret: (0, core_1.getInput)('TWITTER_ACCESS_TOKEN_SECRET')
         });
-        core_1.default.info(`Processing ${metadata.length} metadata entries...`);
+        (0, core_1.info)(`Processing ${metadata.length} metadata entries...`);
         for (let i = 0; i < metadata.length; i++) {
             const elem = metadata[i];
             if ((0, assert_contains_1.default)(types, elem.type)) {
@@ -108,7 +108,7 @@ async function main() {
                 const keys = (0, utils_keys_1.default)(rules);
                 for (let j = 0; j < keys.length; j++) {
                     const key = keys[j];
-                    core_1.default.info(`Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...`);
+                    (0, core_1.info)(`Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...`);
                     const re = (0, utils_regexp_from_string_1.default)(key);
                     if (re.test(description)) {
                         let replacement;
@@ -122,9 +122,9 @@ async function main() {
                         if (typeof authors === 'string') {
                             tweet = replacePlaceholders(tweet, elem, JSON.parse(authors));
                         }
-                        core_1.default.info(`Tweeting: "${tweet}"`);
+                        (0, core_1.info)(`Tweeting: "${tweet}"`);
                         const res = await client.post('/statuses/update', { status: tweet });
-                        core_1.default.info(res);
+                        (0, core_1.info)(res);
                         break;
                     }
                 }
@@ -132,8 +132,8 @@ async function main() {
         }
     }
     catch (e) {
-        core_1.default.error(e);
-        core_1.default.setFailed(e.message);
+        (0, core_1.error)(e);
+        (0, core_1.setFailed)(e.message);
     }
 }
 main();

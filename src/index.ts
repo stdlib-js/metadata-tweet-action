@@ -18,7 +18,7 @@
 
 // MODULES //
 
-import core from '@actions/core';
+import { getInput, error, info, setFailed } from '@actions/core';
 import Twitter from 'twitter';
 import isArray from '@stdlib/assert-is-array';
 import contains from '@stdlib/assert-contains';
@@ -51,7 +51,7 @@ type AuthorMap = { [username: string]: string };
 function twitterHandle( user, authors: AuthorMap ): string {
 	const { username, name } = user;
 	if ( username ) {
-		core.info( 'Checking for whether username is present in the authors object: '+JSON.stringify( authors ) );
+		info( 'Checking for whether username is present in the authors object: '+JSON.stringify( authors ) );
 		if ( authors[ username ] ) {
 			return `@${authors[ username ]}`;
 		}
@@ -73,7 +73,7 @@ function replacePlaceholders( str: string, elem, authors: AuthorMap ): string {
 	const keys = objectKeys( elem );
 	for ( let i = 0; i < keys.length; i++ ) {
 		const key = keys[ i ];
-		core.info( 'Replacing <'+key+'> in the supplied string...' );
+		info( 'Replacing <'+key+'> in the supplied string...' );
 		let value;
 		switch ( key ) {
 			case 'author': 
@@ -96,22 +96,22 @@ function replacePlaceholders( str: string, elem, authors: AuthorMap ): string {
 */
 async function main() {
 	try {
-		const metadata = JSON.parse( core.getInput( 'metadata' ) );
-		const rulesPath = core.getInput( 'rules' );
+		const metadata = JSON.parse( getInput( 'metadata' ) );
+		const rulesPath = getInput( 'rules' );
 		const rulesTable = readJSON( rulesPath );
-		const authorsPath = core.getInput( 'authors' );
+		const authorsPath = getInput( 'authors' );
 		const authors = readJSON( authorsPath );
-		const types = core.getInput( 'types' )
+		const types = getInput( 'types' )
 			.split( ',' )
 			.map( x => trim( x ) );
-		core.info( `Generate tweets for metadata of the following types: ${types} (n = ${types.length}).` );
+		info( `Generate tweets for metadata of the following types: ${types} (n = ${types.length}).` );
 		const client = new Twitter({
-			consumer_key: core.getInput( 'TWITTER_CONSUMER_KEY' ),
-			consumer_secret: core.getInput( 'TWITTER_CONSUMER_SECRET' ),
-			access_token_key: core.getInput( 'TWITTER_ACCESS_TOKEN' ),
-			access_token_secret: core.getInput( 'TWITTER_ACCESS_TOKEN_SECRET' )
+			consumer_key: getInput( 'TWITTER_CONSUMER_KEY' ),
+			consumer_secret: getInput( 'TWITTER_CONSUMER_SECRET' ),
+			access_token_key: getInput( 'TWITTER_ACCESS_TOKEN' ),
+			access_token_secret: getInput( 'TWITTER_ACCESS_TOKEN_SECRET' )
 		})
-		core.info( `Processing ${metadata.length} metadata entries...` );
+		info( `Processing ${metadata.length} metadata entries...` );
 		for ( let i = 0; i < metadata.length; i++ ) {
 			const elem = metadata[ i ];
 			if ( contains( types, elem.type ) ) {
@@ -120,7 +120,7 @@ async function main() {
 				const keys = objectKeys( rules );
 				for ( let j = 0; j < keys.length; j++ ) {
 					const key = keys[ j ];
-					core.info( `Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...` );
+					info( `Processing ${elem.type} metadata entry with description "${description}" and rule "${key}"...` );
 					const re = reFromString( key );
 					if ( re.test( description ) ) {
 						let replacement;
@@ -133,17 +133,17 @@ async function main() {
 						if ( typeof authors === 'string' ) {
 							tweet = replacePlaceholders( tweet, elem, JSON.parse( authors ) );
 						}
-						core.info( `Tweeting: "${tweet}"` );
+						info( `Tweeting: "${tweet}"` );
 						const res = await client.post( '/statuses/update', { status: tweet } );
-						core.info( res );
+						info( res );
 						break;
 					}
 				}
 			}
 		}
 	} catch ( e ) {
-		core.error( e );
-		core.setFailed( e.message );
+		error( e );
+		setFailed( e.message );
 	}
 }
 
