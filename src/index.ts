@@ -48,7 +48,7 @@ type AuthorMap = { [username: string]: string };
 * @param {Object} authors - object mapping GitHub user names to Twitter handles
 * @returns {string} Twitter handle or the name of the user as a fallback
 */
-function twitterHandle( user, authors: AuthorMap ): string {
+function twitterHandle( user: { username?: string, name: string }, authors: AuthorMap ): string {
 	const { username, name } = user;
 	if ( username ) {
 		info( 'Checking for whether username is present in the authors object: '+JSON.stringify( authors ) );
@@ -93,8 +93,10 @@ function replacePlaceholders( str: string, elem, authors: AuthorMap ): string {
 
 /**
 * Main function.
+*
+* @returns {Promise<void>} promise indicating completion
 */
-async function main() {
+async function main(): Promise<void> {
 	try {
 		const metadata = JSON.parse( getInput( 'metadata' ) );
 		const rulesPath = getInput( 'rules' );

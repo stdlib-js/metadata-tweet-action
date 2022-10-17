@@ -40,7 +40,7 @@ jobs:
 
     # Define the sequence of job steps...
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           npm install
@@ -120,7 +120,7 @@ See [LICENSE][stdlib-license].
 
 ## Copyright
 
-Copyright &copy; 2021. The Stdlib [Authors][stdlib-authors].
+Copyright &copy; 2021-2022. The Stdlib [Authors][stdlib-authors].
 
 <!-- Section for all links. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
 
