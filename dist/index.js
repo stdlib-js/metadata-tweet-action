@@ -81,6 +81,8 @@ function replacePlaceholders(str, elem, authors) {
 // MAIN //
 /**
 * Main function.
+*
+* @returns {Promise<void>} promise indicating completion
 */
 async function main() {
     try {
