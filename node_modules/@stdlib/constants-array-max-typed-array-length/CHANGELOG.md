@@ -1,5 +1,0 @@
-# CHANGELOG
-
-> Package changelog.
-
-See [GitHub Releases](https://github.com/stdlib-js/constants-array-max-typed-array-length/releases) for the changelog.
