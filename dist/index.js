@@ -36,9 +36,9 @@ const string_trim_1 = __importDefault(require("@stdlib/string-trim"));
 * Returns the Twitter handle corresponding to a given GitHub user.
 *
 * @private
-* @param {Object} user - GitHub user object
-* @param {Object} authors - object mapping GitHub user names to Twitter handles
-* @returns {string} Twitter handle or the name of the user as a fallback
+* @param user - GitHub user object
+* @param authors - object mapping GitHub user names to Twitter handles
+* @returns Twitter handle or the name of the user as a fallback
 */
 function twitterHandle(user, authors) {
     const { username, name } = user;
@@ -54,10 +54,10 @@ function twitterHandle(user, authors) {
 * Replaces all `<placeholder>`s in the supplied string.
 *
 * @private
-* @param {string} str - string to replace placeholders in
-* @param {Object} elem - metadata object
-* @param {Object} authors - object mapping GitHub user names to Twitter handles
-* @returns {string} string with placeholders replaced
+* @param str - string to replace placeholders in
+* @param elem - metadata object
+* @param authors - object mapping GitHub user names to Twitter handles
+* @returns string with placeholders replaced
 */
 function replacePlaceholders(str, elem, authors) {
     let out = str;
@@ -82,7 +82,7 @@ function replacePlaceholders(str, elem, authors) {
 /**
 * Main function.
 *
-* @returns {Promise<void>} promise indicating completion
+* @returns promise indicating completion
 */
 async function main() {
     try {
