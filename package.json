@@ -1,6 +1,6 @@
 {
     "name": "metadata-tweet-action",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Trigger the sending of tweets from a metadata object array.",
     "main": "dist/index.js",
     "scripts": {

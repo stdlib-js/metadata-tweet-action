@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Extract metadata
         id: extract-metadata
-        uses: stdlib-js/commit-metadata-action@v1.0.1
+        uses: stdlib-js/commit-metadata-action@v2
       - name: Process metadata and send tweets
         uses: ./
         with:

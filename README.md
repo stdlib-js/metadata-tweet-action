@@ -46,9 +46,9 @@ jobs:
           npm install
       - name: Extract metadata
         id: extract-metadata
-        uses: stdlib-js/commit-metadata-action@v1
+        uses: stdlib-js/commit-metadata-action@v2
       - name: Process metadata and send tweets
-        uses: stdlib-js/metadata-tweet-action@v1
+        uses: stdlib-js/metadata-tweet-action@v2
         with:
           metadata: ${{ steps.extract-metadata.outputs.metadata }}
           TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
