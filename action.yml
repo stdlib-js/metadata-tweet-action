@@ -18,19 +18,15 @@ inputs:
   TWITTER_CONSUMER_KEY:
     description: A valid Twitter consumer key.
     required: true
-    type: string
   TWITTER_CONSUMER_SECRET:
     description: A valid Twitter consumer secret.
     required: true
-    type: string
   TWITTER_ACCESS_TOKEN:
     description: A valid Twitter access token.
     required: true
-    type: string
   TWITTER_ACCESS_TOKEN_SECRET:
     description: A valid Twitter access token secret.
     required: true
-    type: string
 
 runs:
   using: node16
