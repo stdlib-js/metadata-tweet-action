@@ -6,13 +6,13 @@ inputs:
   metadata:
     description: Metadata object array.
     required: true
-  types: 
+  types:
     description: Comma-separated list of meatadata types to generate tweets for.
     default: "bugfix, feature, release"
   rules:
     description: A file path to a JSON file containing the rules for generating tweets in the form of an object with regular expression strings and corresponding replacement strings for each type.
     default: "./rules.json"
-  authors: 
+  authors:
     description: A file path to a JSON file containing a mapping from GitHub user names to Twitter handles.
     default: "./authors.json"
   TWITTER_CONSUMER_KEY:
@@ -29,7 +29,7 @@ inputs:
     required: true
 
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
 
 branding:
